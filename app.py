@@ -34,17 +34,38 @@ HANDBOOK:
 {handbook}
 """
 
-def ask_gemini(question: str, handbook: str, retries: int = 3) -> str:
-    prompt = SYSTEM_PROMPT.format(handbook=handbook) + f"\n\nQuestion: {question}"
+def ask_gemini(question: str, handbook: str, history: list, retries: int = 3) -> str:
+    system_text = SYSTEM_PROMPT.format(handbook=handbook)
+
+    # Build contents: system context as first user turn, then last 3 exchanges, then current question
+    contents = [
+        {"role": "user", "parts": [{"text": system_text}]},
+        {"role": "model", "parts": [{"text": "Understood. I will answer only from the MediCore HR handbook, cite sections, refuse out-of-scope questions, and reply in the user's language."}]},
+    ]
+
+    # Add last 3 exchanges (6 messages) for context
+    history_window = history[-6:]
+    for msg in history_window:
+        role = "user" if msg["role"] == "user" else "model"
+        contents.append({
+            "role": role,
+            "parts": [{"text": msg["content"]}]
+        })
+
+    # Append the current question
+    contents.append({
+        "role": "user",
+        "parts": [{"text": question}]
+    })
+
     body = {
-        "contents": [
-            {"parts": [{"text": prompt}]}
-        ],
+        "contents": contents,
         "generationConfig": {
             "maxOutputTokens": 512,
             "temperature": 0.1
         }
     }
+
     for attempt in range(retries):
         try:
             r = requests.post(API_URL, json=body, timeout=60)
@@ -89,7 +110,9 @@ if question := st.chat_input("Ask a policy question..."):
 
     with st.chat_message("assistant"):
         with st.spinner("Looking up policy..."):
-            answer = ask_gemini(question, HANDBOOK)
+            # Pass history excluding the current question (it's appended inside ask_gemini)
+            history = st.session_state.messages[:-1]
+            answer = ask_gemini(question, HANDBOOK, history)
         st.markdown(answer)
 
     st.session_state.messages.append({"role": "assistant", "content": answer})
