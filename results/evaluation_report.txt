@@ -7,13 +7,13 @@
 
   METRIC                TARGET    RESULT
   ─────────────────────────────────────────
-  English accuracy      ≥90%      90.0%   (36/40)
+  English accuracy      ≥90%      95.0%   (38/40)
   Bangla accuracy       ≥90%      100.0%   (40/40)
-  EN–BN gap             ≤5pp      10.0pp
+  EN–BN gap             ≤5pp      5.0pp
   Refusals (EN)         10/10     10/10
   Refusals (BN)         10/10     10/10
 
-  VERDICT: SOME TARGETS MISSED ✗
+  VERDICT: ALL TARGETS MET ✓
 
   NOTE: Keyword scoring checks English expected summaries only.
   Bangla answers are scored on number accuracy (cross-script).
@@ -22,17 +22,11 @@
   expected summary. Human review recommended for flagged items.
 
   English failures:
-    Q001: keyword match 0% — missing: ['working']
-      Expected : 20 working days per year
-      Got (EN) : A Grade A employee gets 20 days of annual leave per year, as stated in Section 3
-    Q002: keyword match 0% — missing: ['working']
-      Expected : 18 working days per year
-      Got (EN) : A Grade B employee gets 18 days of annual leave per year, as stated in Section 3
     Q006: keyword match 50% — missing: ['before', 'after', 'delivery']
       Expected : 16 weeks (112 days) - 8 weeks before and 8 weeks after delivery
       Got (EN) : A female employee who has completed at least 6 months of service is entitled to 
     Q009: keyword match 0% — missing: ['excess', 'lapses', 'december']
       Expected : Up to 10 days; excess lapses on 31 December
-      Got (EN) : Based on Section 3.2.5 of the handbook, unused annual leave of up to **10 days**
+      Got (EN) : Unused annual leave of up to 10 days may be carried forward to the following lea
 
 ============================================================

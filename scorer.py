@@ -1,6 +1,7 @@
 import csv
 import requests
 import os
+import re
 import time
 
 # Load API key from .env manually
@@ -18,6 +19,21 @@ os.makedirs("results", exist_ok=True)
 
 with open(HANDBOOK_PATH, encoding="utf-8") as f:
     HANDBOOK = f.read()
+
+# Build set of every section number that actually exists in the handbook
+def extract_handbook_sections(handbook_text: str) -> set:
+    """Pull every section number that actually exists in the handbook."""
+    return set(re.findall(r"\b(\d+\.\d+(?:\.\d+)?)\b", handbook_text))
+
+HANDBOOK_SECTIONS = extract_handbook_sections(HANDBOOK)
+
+def check_citations(answer: str, valid_sections: set) -> list:
+    """
+    Return a list of section numbers cited in the answer that don't exist
+    in the handbook. Empty list means all citations are valid.
+    """
+    cited = re.findall(r"[Ss]ection\s+(\d+\.\d+(?:\.\d+)?)", answer)
+    return [s for s in cited if s not in valid_sections]
 
 SYSTEM_PROMPT = """You are an HR policy assistant for MediCore Bangladesh Ltd.
 Your ONLY knowledge source is the HR Employee Handbook provided below.
@@ -67,6 +83,7 @@ with open(TEST_PATH, encoding="utf-8") as f:
 
 results = []
 total = len(rows)
+citation_warnings = []
 
 print(f"Running {total} questions...\n")
 
@@ -74,7 +91,6 @@ for i, row in enumerate(rows, 1):
     qid = row["id"]
     q_en = row["question"]
     q_bn = row["question_bn"]
-    must_refuse = row["must_refuse"].strip().upper() == "TRUE"
 
     print(f"[{i}/{total}] {qid} - English...")
     ans_en = ask(q_en)
@@ -83,6 +99,18 @@ for i, row in enumerate(rows, 1):
     print(f"[{i}/{total}] {qid} - Bangla...")
     ans_bn = ask(q_bn)
     time.sleep(3)
+
+    # Citation spot-check
+    bad_en = check_citations(ans_en, HANDBOOK_SECTIONS)
+    bad_bn = check_citations(ans_bn, HANDBOOK_SECTIONS)
+    if bad_en:
+        msg = f"  ⚠️  {qid} EN cites non-existent sections: {bad_en}"
+        print(msg)
+        citation_warnings.append(msg)
+    if bad_bn:
+        msg = f"  ⚠️  {qid} BN cites non-existent sections: {bad_bn}"
+        print(msg)
+        citation_warnings.append(msg)
 
     results.append({
         "id": qid,
@@ -106,4 +134,10 @@ with open(OUTPUT_PATH, "w", encoding="utf-8", newline="") as f:
     writer.writerows(results)
 
 print(f"\nDone. Raw answers saved to {OUTPUT_PATH}")
-print("Now open results/raw_answers.csv and share it to get your score.")
+
+if citation_warnings:
+    print(f"\n⚠️  {len(citation_warnings)} citation warning(s) — review manually:")
+    for w in citation_warnings:
+        print(w)
+else:
+    print("\n✓ All cited sections exist in the handbook.")
