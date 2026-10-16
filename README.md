@@ -38,7 +38,7 @@ All four targets met on first evaluation run.
 | UI | Streamlit |
 | Language | Python 3.11 |
 | Deployment | Streamlit Cloud |
-| Cost | Free tier only |
+| Cost | Gemini free tier (subject to quota limits) |
 
 ---
 
@@ -46,7 +46,7 @@ All four targets met on first evaluation run.
 
 1. The full HR handbook is loaded as context on every request
 2. A strict system prompt instructs the model to answer only from the handbook, cite sections, refuse out-of-scope questions, and reply in the user's language
-3. Responses are streamed back through the Streamlit chat interface
+3. The model returns a complete response via the Gemini REST API, displayed in the Streamlit chat interface
 
 ---
 
@@ -56,7 +56,7 @@ All four targets met on first evaluation run.
 git clone https://github.com/tarifhassan27/hr-policy-assistant.git
 cd hr-policy-assistant
 python -m venv venv
-venv\Scripts\activate        # Windows
+.\venv\Scripts\Activate.ps1  # Windows PowerShell
 pip install -r requirements.txt
 ```
 
@@ -77,13 +77,15 @@ streamlit run app.py
 ```
 hr-policy-assistant/
 ├── app.py               # Streamlit chatbot
-├── scorer.py            # Automated evaluation script
+├── scorer.py            # Generates model answers for all 50 test questions
+├── evaluate.py          # Scores raw answers; outputs evaluation_report.txt
 ├── handbook/
 │   └── handbook.md      # HR policy handbook (source of truth)
 ├── tests/
 │   └── test_set.csv     # 50-question blind test set
 ├── results/
-│   └── raw_answers.csv  # Model outputs for all 50 questions
+│   ├── raw_answers.csv        # Model outputs for all 50 questions
+│   └── evaluation_report.txt  # Scored accuracy results
 ├── definitions.md       # Locked accuracy targets (set before any code)
 └── requirements.txt
 ```
