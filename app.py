@@ -6,6 +6,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 API_KEY = os.getenv("GEMINI_API_KEY")
+
+if not API_KEY:
+    st.error("⚠️ GEMINI_API_KEY is not set. Add it to your .env file (local) or Streamlit Secrets (cloud).")
+    st.stop()
+
 API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key={API_KEY}"
 
 HANDBOOK_PATH = "handbook/handbook.md"
@@ -88,8 +93,16 @@ def ask_gemini(question: str, handbook: str, history: list, retries: int = 3) ->
                 continue
             return "Request timed out. Please try again."
         except Exception as e:
-            return f"Error: {e}"
-    return "Service temporarily unavailable. Please wait a minute and try again."
+            if hasattr(e, 'response') and e.response is not None:
+                status = e.response.status_code
+                if status == 401:
+                    return "⚠️ Invalid API key. Please check your GEMINI_API_KEY."
+                if status == 429:
+                    return "⚠️ Free-tier quota exceeded. Please wait a few minutes and try again."
+                if status == 404:
+                    return "⚠️ Model not found. The API endpoint may have changed."
+            return "⚠️ Something went wrong. Please try again in a moment."
+    return "⚠️ The service is temporarily unavailable after 3 attempts. Please wait a minute and try again."
 
 # --- UI ---
 st.set_page_config(page_title="MediCore HR Assistant", page_icon="💊")
