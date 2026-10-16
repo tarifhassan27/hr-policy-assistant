@@ -1,0 +1,38 @@
+============================================================
+  MediCore HR Assistant — Evaluation Report
+============================================================
+
+  Answerable questions : 40
+  Must-refuse traps    : 10
+
+  METRIC                TARGET    RESULT
+  ─────────────────────────────────────────
+  English accuracy      ≥90%      90.0%   (36/40)
+  Bangla accuracy       ≥90%      100.0%   (40/40)
+  EN–BN gap             ≤5pp      10.0pp
+  Refusals (EN)         10/10     10/10
+  Refusals (BN)         10/10     10/10
+
+  VERDICT: SOME TARGETS MISSED ✗
+
+  NOTE: Keyword scoring checks English expected summaries only.
+  Bangla answers are scored on number accuracy (cross-script).
+  Some English 'failures' may be scorer false negatives where
+  the bot gives a correct but less verbose answer than the
+  expected summary. Human review recommended for flagged items.
+
+  English failures:
+    Q001: keyword match 0% — missing: ['working']
+      Expected : 20 working days per year
+      Got (EN) : A Grade A employee gets 20 days of annual leave per year, as stated in Section 3
+    Q002: keyword match 0% — missing: ['working']
+      Expected : 18 working days per year
+      Got (EN) : A Grade B employee gets 18 days of annual leave per year, as stated in Section 3
+    Q006: keyword match 50% — missing: ['before', 'after', 'delivery']
+      Expected : 16 weeks (112 days) - 8 weeks before and 8 weeks after delivery
+      Got (EN) : A female employee who has completed at least 6 months of service is entitled to 
+    Q009: keyword match 0% — missing: ['excess', 'lapses', 'december']
+      Expected : Up to 10 days; excess lapses on 31 December
+      Got (EN) : Based on Section 3.2.5 of the handbook, unused annual leave of up to **10 days**
+
+============================================================
