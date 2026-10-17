@@ -226,7 +226,18 @@ with open(INPUT_PATH, encoding="utf-8") as f:
     rows = list(csv.DictReader(f))
 
 results = []
+api_errors = []  # rows where scorer.py recorded an API failure
+
 for row in rows:
+    # scorer.py writes "ERROR: ..." when an API request fails.
+    # Scoring error strings as answers would silently deflate accuracy.
+    # Collect them separately and exclude from scoring.
+    en_err = row["answer_en"].startswith("ERROR:")
+    bn_err = row["answer_bn"].startswith("ERROR:")
+    if en_err or bn_err:
+        api_errors.append(row["id"])
+        continue
+
     must_refuse = row["must_refuse"].strip().upper() == "TRUE"
     expected = row["expected"]
 
@@ -275,6 +286,9 @@ lines.append("=" * 60)
 lines.append("")
 lines.append(f"  Answerable questions : {total_ans}")
 lines.append(f"  Must-refuse traps    : {total_ref}")
+if api_errors:
+    lines.append(f"  API errors (skipped) : {len(api_errors)}  ← RE-RUN SCORER before trusting results")
+    lines.append(f"  Affected IDs         : {', '.join(api_errors)}")
 lines.append("")
 lines.append("  METRIC                TARGET    RESULT")
 lines.append("  ─────────────────────────────────────────")
@@ -286,6 +300,7 @@ lines.append(f"  Refusals (BN)         10/10     {ref_bn}/{total_ref}")
 lines.append("")
 
 all_targets = (
+    not api_errors and   # any API error → results are incomplete
     en_pct >= 90 and
     bn_pct >= 90 and
     gap    <= 5  and
