@@ -22,7 +22,9 @@ REFUSAL_PHRASES = [
     "outside the scope",
     "scope of the medicore",
     "please contact hr",
-    "এর বাইরে",
+    # "এর বাইরে" removed — too generic; common Bangla grammar ("outside of this")
+    # that appears in factual answers, not only refusals. The specific compound
+    # forms below already cover all legitimate refusal patterns.
     "স্কোপের বাইরে",
     "সীমার বাইরে",
     "সরাসরি যোগাযোগ করুন",
