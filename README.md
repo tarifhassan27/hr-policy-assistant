@@ -21,12 +21,12 @@ Evaluated against a 50-question blind test set (40 answerable + 10 must-refuse t
 
 | Metric | Target | Result |
 |---|---|---|
-| English accuracy | ≥ 90% | **92.5%** |
-| Bangla accuracy | ≥ 90% | **92.5%** |
-| EN vs BN gap | ≤ 5 percentage points | **0 pp** |
+| English accuracy | ≥ 90% | **95.0%** |
+| Bangla accuracy | ≥ 90% | **100.0%** |
+| EN vs BN gap | ≤ 5 percentage points | **5 pp** |
 | Refusal rate (out-of-scope) | 10 / 10 | **10 / 10** |
 
-All four targets met on first evaluation run.
+All four targets met. Evaluated on `gemini-3.5-flash-lite` · test-set v1 · Oct 2026.
 
 ---
 
@@ -89,3 +89,27 @@ hr-policy-assistant/
 ├── definitions.md       # Locked accuracy targets (set before any code)
 └── requirements.txt
 ```
+
+---
+
+## Evaluation methodology
+
+English scoring uses keyword overlap (≥ 60% of expected keywords must appear) plus primary number matching. Bangla scoring checks that expected numerical values appear in the answer (in ASCII or Bengali script). Refusals are scored by presence of the required out-of-scope phrase and absence of fabricated policy content.
+
+**Known limitations of the current scorer:**
+- Bangla scoring does not check keywords — only numerical values and refusal phrases
+- The citation checker verifies section numbers exist in the handbook but not that the cited section supports the specific answer
+- Secondary requirements (e.g. a lapse date alongside a leave count) are flagged in English scoring but not enforced in Bangla
+
+---
+
+## Production roadmap
+
+Items not implemented in this demo but required before production deployment:
+
+- **Structured expected facts** — replace free-text expected answers with per-question JSON fields (primary value, conditions, exceptions, dates) and score each independently
+- **Contradiction detection** — flag answers that give two conflicting values for the same fact
+- **System instruction enforcement** — use the API's dedicated system-instruction field rather than embedding rules in the first user turn
+- **Adversarial refusal tests** — add test cases where a refusal phrase is followed by fabricated content, to catch partial-refusal failures
+- **Exponential backoff** — separate transient API errors (503, network drops) from permanent errors (401, 404) and retry only the former
+- **Runtime citation validation** — run the section-existence check on live chatbot responses, not only during offline evaluation

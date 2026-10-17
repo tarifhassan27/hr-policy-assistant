@@ -59,9 +59,29 @@ def contains_number(text: str, number: str) -> bool:
 
 
 def check_refusal(text: str) -> bool:
-    """Return True if the answer correctly refuses an out-of-scope question."""
+    """
+    Return True if the answer correctly refuses an out-of-scope question.
+
+    A genuine refusal must:
+      1. Contain a refusal phrase (existing check)
+      2. NOT cite a section number — a real refusal has no policy to cite
+      3. NOT answer with a number after the refusal phrase (partial refusal)
+    """
     text_lower = text.lower()
-    return any(phrase in text_lower for phrase in REFUSAL_PHRASES)
+    if not any(phrase in text_lower for phrase in REFUSAL_PHRASES):
+        return False
+    # Fail: refusal phrase present but a section citation also appears
+    if re.search(r"section\s+\d+\.\d+", text_lower):
+        return False
+    # Fail: a digit appears in the portion of text AFTER the refusal phrase
+    # (catches "outside scope... but typically 14 days")
+    for phrase in REFUSAL_PHRASES:
+        idx = text_lower.find(phrase)
+        if idx != -1:
+            after = text[idx + len(phrase):]
+            if re.search(r"\d", after):
+                return False
+    return True
 
 
 def extract_keywords(expected: str):
@@ -100,6 +120,36 @@ def is_bangla(text: str) -> bool:
     return bangla_chars > 10
 
 
+def check_contradiction(answer: str, expected_primary: str) -> str | None:
+    """
+    Return a warning string if the answer gives a conflicting value alongside
+    the expected one, otherwise None.
+
+    Logic: collect all numbers in the answer of the same digit-length as the
+    expected value. If more than one distinct value of that length appears,
+    the answer contains contradictory figures for the same fact.
+
+    Example: expected "650" → answer has "৬৫২" (652) AND "650" → contradiction.
+    """
+    if not expected_primary:
+        return None
+
+    target_len = len(expected_primary)
+    # Find all digit sequences of the same length in the answer (ASCII only)
+    answer_clean = re.sub(r"(\d),(\d)", r"\1\2", answer)
+    found = set(re.findall(r"\b\d{" + str(target_len) + r"}\b", answer_clean))
+
+    # Also convert Bengali numerals to ASCII before collecting
+    bn_to_ascii = str.maketrans("০১২৩৪৫৬৭৮৯", "0123456789")
+    answer_ascii = answer.translate(bn_to_ascii)
+    found |= set(re.findall(r"\b\d{" + str(target_len) + r"}\b", answer_ascii))
+
+    if len(found) > 1 and expected_primary in found:
+        conflicting = found - {expected_primary}
+        return f"CONTRADICTION: answer gives {expected_primary} but also {conflicting} — review manually"
+    return None
+
+
 def score_answer(answer: str, expected: str, must_refuse: bool) -> tuple[bool, str]:
     """
     Returns (passed: bool, reason: str).
@@ -108,6 +158,10 @@ def score_answer(answer: str, expected: str, must_refuse: bool) -> tuple[bool, s
     For Bangla answers: check numbers only (cross-script). Keywords are English
     and cannot be matched against Bangla text — the answer is accepted if all
     required numbers are present and the answer is not a refusal.
+
+    Contradiction check: if the answer gives two conflicting values of the same
+    digit-length alongside the expected value, it is flagged for human review
+    rather than auto-passed.
     """
     if must_refuse:
         passed = check_refusal(answer)
@@ -121,6 +175,12 @@ def score_answer(answer: str, expected: str, must_refuse: bool) -> tuple[bool, s
 
     # Strip comma-formatted numbers from the answer so "2,500" == "2500"
     answer_denorm = re.sub(r"(\d),(\d)", r"\1\2", answer)
+
+    # Contradiction check — run before accepting the answer
+    if primary:
+        contradiction = check_contradiction(answer, primary[0])
+        if contradiction:
+            return False, contradiction
 
     # Primary number must appear (skip leading-zero section suffixes like "01")
     for num in primary:
