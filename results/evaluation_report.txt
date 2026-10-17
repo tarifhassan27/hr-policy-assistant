@@ -7,13 +7,13 @@
 
   METRIC                TARGET    RESULT
   ─────────────────────────────────────────
-  English accuracy      ≥90%      57.5%   (23/40)
-  Bangla accuracy       ≥90%      30.0%   (12/40)
-  EN–BN gap             ≤5pp      27.5pp
+  English accuracy      ≥90%      95.0%   (38/40)
+  Bangla accuracy       ≥90%      100.0%   (40/40)
+  EN–BN gap             ≤5pp      5.0pp
   Refusals (EN)         10/10     10/10
   Refusals (BN)         10/10     10/10
 
-  VERDICT: SOME TARGETS MISSED ✗
+  VERDICT: ALL TARGETS MET ✓
 
   NOTE: Keyword scoring checks English expected summaries only.
   Bangla answers are scored on number accuracy (cross-script).
@@ -25,151 +25,8 @@
     Q006: keyword match 50% — missing: ['before', 'after', 'delivery']
       Expected : 16 weeks (112 days) - 8 weeks before and 8 weeks after delivery
       Got (EN) : A female employee who has completed at least 6 months of service is entitled to 
-    Q007: CONTRADICTION: answer gives 6 but also {'1', '3', '5'} — review manually
-      Expected : At least 6 months of service
-      Got (EN) : Female employees must have completed at least 6 months of service to be eligible
-    Q008: CONTRADICTION: answer gives 7 but also {'2', '3'} — review manually
-      Expected : At least 7 calendar days in advance
-      Got (EN) : Annual leave must be applied for at least **7 calendar days in advance** (Sectio
     Q009: keyword match 0% — missing: ['excess', 'lapses', 'december']
       Expected : Up to 10 days; excess lapses on 31 December
       Got (EN) : Unused annual leave of up to 10 days may be carried forward to the following lea
-    Q010: CONTRADICTION: answer gives 9 but also {'1', '6', '2'} — review manually
-      Expected : 9:00 AM to 6:00 PM Sunday to Thursday
-      Got (EN) : The standard office hours for Grade A employees are **9:00 AM to 6:00 PM**, Sund
-    Q011: CONTRADICTION: answer gives 8 but also {'1', '2', '3'} — review manually
-      Expected : No later than 8:30 AM
-      Got (EN) : A Grade B field employee must make their morning call-in **no later than 8:30 AM
-    Q012: CONTRADICTION: answer gives 6 but also {'2', '4', '3'} — review manually
-      Expected : No later than 6:30 PM on the same working day
-      Got (EN) : According to Section 2.3.4, a Grade B employee must submit the Daily Call Report
-    Q017: CONTRADICTION: answer gives 5 but also {'2', '4'} — review manually
-      Expected : By the 5th of the following month
-      Got (EN) : Based on Section 4.5.2 of the HR Employee Handbook, a Grade B employee must subm
-    Q018: CONTRADICTION: answer gives 7 but also {'2', '5'} — review manually
-      Expected : Within 7 calendar days of the date of return
-      Got (EN) : According to Section 5.7.2, an employee must submit their travel expense claim w
-    Q026: CONTRADICTION: answer gives 6 but also {'1', '7'} — review manually
-      Expected : Six (6) months from the date of joining
-      Got (EN) : The standard probation period for all newly appointed employees is **six (6) mon
-    Q027: CONTRADICTION: answer gives 4 but also {'2', '7'} — review manually
-      Expected : At the end of Month 4 of probation
-      Got (EN) : The mid-probation performance review is conducted at the end of Month 4 of proba
-    Q028: CONTRADICTION: answer gives 3 but also {'1', '4', '7', '9'} — review manually
-      Expected : Yes by three (3) months once only. Maximum probation is nine (9) months.
-      Got (EN) : Yes, the probation period can be extended by three (3) months. 
-
-According to **
-    Q030: CONTRADICTION: answer gives 4 but also {'1', '6', '2', '7'} — review manually
-      Expected : From the first day of Month 4 of service. Not eligible during the first three mo
-      Got (EN) : A newly joined Grade B employee becomes eligible for Field Allowance from the fi
-    Q033: CONTRADICTION: answer gives 14 but also {'01'} — review manually
-      Expected : Within 14 working days of receiving Form GR-01
-      Got (EN) : HR must complete a grievance investigation within 14 working days of receiving F
-    Q035: CONTRADICTION: answer gives 8 but also {'1', '2', '6'} — review manually
-      Expected : Twice the ordinary basic rate for hours beyond 8 hours per day or 48 hours per w
-      Got (EN) : According to Section 2.6.1 of the handbook, Grade C employees are entitled to ov
-    Q037: CONTRADICTION: answer gives 48 but also {'01'} — review manually
-      Expected : At least 48 hours before the scheduled departure
-      Got (EN) : According to Section 5.2.2, Form TR-01 (Travel Request and Advance) must be subm
-    Q040: CONTRADICTION: answer gives 3 but also {'6', '2'} — review manually
-      Expected : 3 working days
-      Got (EN) : An employee is entitled to **3 working days** of bereavement leave on the death 
-
-  Bangla failures:
-    Q001: CONTRADICTION: answer gives 20 but also {'২০'} — review manually
-      Expected : 20 working days per year
-      Got (BN) : গ্রেড A কর্মীরা বছরে ২০ দিন বার্ষিক ছুটি পান। 
-
-সূত্র: সেকশন ৩.২.১
-    Q002: CONTRADICTION: answer gives 18 but also {'১৮'} — review manually
-      Expected : 18 working days per year
-      Got (BN) : গ্রেড B কর্মীরা প্রতি বছর **১৮ দিন** বার্ষিক (অর্জিত) ছুটি পান। 
-
-উৎস: সেকশন ৩.২
-    Q003: CONTRADICTION: answer gives 15 but also {'১৫'} — review manually
-      Expected : 15 working days per year
-      Got (BN) : গ্রেড C কর্মীরা বছরে ১৫ দিন বার্ষিক ছুটি পান। 
-
-সূত্র: সেকশন ৩.২.১
-    Q004: CONTRADICTION: answer gives 14 but also {'১৪'} — review manually
-      Expected : 14 days per leave year on full pay
-      Got (BN) : সকল গ্রেডের কর্মী বছরে **১৪ দিন** (14 days) সম্পূর্ণ বেতনে অসুস্থতাজনিত ছুটি পাও
-    Q005: CONTRADICTION: answer gives 10 but also {'১০'} — review manually
-      Expected : 10 days per leave year on full pay
-      Got (BN) : সব গ্রেডের কর্মী প্রতি ছুটি বছরে **১০ দিন** নৈমিত্তিক ছুটি পান। 
-
-সূত্র: ধারা ৩.
-    Q006: CONTRADICTION: answer gives 16 but also {'১৬'} — review manually
-      Expected : 16 weeks (112 days) - 8 weeks before and 8 weeks after delivery
-      Got (BN) : ন্যূনতম ৬ মাস চাকরি সম্পন্নকারী নারী কর্মীরা ১৬ সপ্তাহ (১১২ দিন) পর্যন্ত সম্পূর্
-    Q007: CONTRADICTION: answer gives 6 but also {'১', '৩', '5', '1', '৬', '৫', '3'} — review manually
-      Expected : At least 6 months of service
-      Got (BN) : মেডিকেয়ার বাংলাদেশ লিমিটেডের এইচআর হ্যান্ডবুক অনুযায়ী, মাতৃত্বকালীন ছুটির জন্য
-    Q008: CONTRADICTION: answer gives 7 but also {'৭', '৩', '২', '2', '3'} — review manually
-      Expected : At least 7 calendar days in advance
-      Got (BN) : বার্ষিক ছুটির জন্য কমপক্ষে **৭ দিন আগে** আবেদন করতে হবে এবং তা লাইন ম্যানেজার কর
-    Q009: CONTRADICTION: answer gives 10 but also {'১০'} — review manually
-      Expected : Up to 10 days; excess lapses on 31 December
-      Got (BN) : অনুগ্রহ করে সর্বোচ্চ ১০ দিন unused annual leave পরবর্তী leave year-এ বহন করা যেত
-    Q010: CONTRADICTION: answer gives 9 but also {'১', '২', '৯', '1', '6', '2', '৬'} — review manually
-      Expected : 9:00 AM to 6:00 PM Sunday to Thursday
-      Got (BN) : গ্রড A কর্মীদের অফিস সময় হলো রবিবার থেকে বৃহস্পতিবার, সকাল ৯:০০ টা থেকে সন্ধ্যা
-    Q011: CONTRADICTION: answer gives 8 but also {'১', '৩', '২', '2', '1', '৮', '3'} — review manually
-      Expected : No later than 8:30 AM
-      Got (BN) : গ্রেড B ফিল্ড কর্মীকে প্রতিদিন সকাল **৮:৩০ টার** মধ্যে (no later than 8:30 AM) ন
-    Q012: CONTRADICTION: answer gives 6 but also {'৪', '৩', '২', '2', '৬', '4', '3'} — review manually
-      Expected : No later than 6:30 PM on the same working day
-      Got (BN) : গ্রেড B কর্মীদের প্রতিদিনের কল রিপোর্ট (DCR) একই কার্যদিবসের সন্ধ্যা ৬:৩০ টার মধ
-    Q013: CONTRADICTION: answer gives 500 but also {'৫০০'} — review manually
-      Expected : BDT 500 per day
-      Got (BN) : মেডিকেল রিপ্রেজেন্টেটিভ (Grade B) পদে কর্মরত কর্মচারীদের দৈনিক ফিল্ড অ্যালাউন্স 
-    Q014: CONTRADICTION: answer gives 650 but also {'৬৫০'} — review manually
-      Expected : BDT 650 per day
-      Got (BN) : সিনিয়র মেডিকেল রিপ্রেজেন্টেটিভের (SMR) দৈনিক ফিল্ড অ্যালাউন্স হলো **BDT ৬৫০ টাক
-    Q015: CONTRADICTION: answer gives 400 but also {'৪০০'} — review manually
-      Expected : BDT 400 per day
-      Got (BN) : সেকশন ৪.৩ অনুযায়ী, ফিল্ড এক্সিকিউটিভের (Grade B) দৈনিক ফিল্ড অ্যালাউন্স হলো **প্
-    Q016: CONTRADICTION: answer gives 80 but also {'৮০'} — review manually
-      Expected : 80% of working days in that month
-      Got (BN) : ফিল্ড অ্যালাউন্স পেতে হলে কর্মচারীর উপস্থিতি সংশ্লিষ্ট মাসের কর্মদিবসের অন্তত ৮০
-    Q017: CONTRADICTION: answer gives 5 but also {'4', '৫', '৪'} — review manually
-      Expected : By the 5th of the following month
-      Got (BN) : গ্রেড B কর্মীকে পরবর্তী মাসের **৫ তারিখের** মধ্যে এরিয়া ম্যানেজারের কাছে ফিল্ড 
-    Q018: CONTRADICTION: answer gives 7 but also {'৭', '5', '২', '2', '৫'} — review manually
-      Expected : Within 7 calendar days of the date of return
-      Got (BN) : ভ্রমণ থেকে ফিরে আসার ৭ (সাত) দিনের মধ্যে ব্যয়ের দাবি জমা দিতে হবে। (সূত্র: সেকশ
-    Q020: CONTRADICTION: answer gives 600 but also {'৬০০'} — review manually
-      Expected : BDT 600 per day for each full day of out-station travel
-      Got (BN) : আউট-স্টেশন ভ্রমণে পূর্ণ দিনের জন্য প্রতিদিন ৬০০ টাকা (BDT 600) খাবার ভাতা পাওয়া
-    Q022: CONTRADICTION: answer gives 15000 but also {'১৫০০০'} — review manually
-      Expected : BDT 15000 per leave year
-      Got (BN) : গ্রেড A কর্মীর বার্ষিক চিকিৎসা ভাতা হলো ১৫,০০০ টাকা (BDT 15,000)। 
-
-সূত্র: সেকশন
-    Q026: CONTRADICTION: answer gives 6 but also {'1', '7', '৬'} — review manually
-      Expected : Six (6) months from the date of joining
-      Got (BN) : MediCore Bangladesh Ltd.-এর নিয়ম অনুযায়ী, সকল নতুন কর্মীর জন্য আদর্শ শিক্ষানবিশ 
-    Q027: CONTRADICTION: answer gives 4 but also {'২', '2', '৭', '7'} — review manually
-      Expected : At the end of Month 4 of probation
-      Got (BN) : শিক্ষানবিশকালীন মাঝামাঝি পর্যালোচনা শিক্ষানবিশকালের **চতুর্থ মাসের শেষে (End of 
-    Q028: CONTRADICTION: answer gives 3 but also {'১', '৪', '৭', '৩', '1', '৯', '7', '9', '4'} — review manually
-      Expected : Yes by three (3) months once only. Maximum probation is nine (9) months.
-      Got (BN) : হ্যাঁ, শিক্ষানবিশ মেয়াদ বাড়ানো যায়। কর্মদক্ষতা সন্তোষজনক না হলে কোম্পানির সুপ
-    Q031: CONTRADICTION: answer gives 15 but also {'১৫'} — review manually
-      Expected : 15 days written notice or forfeit 15 days basic salary in lieu
-      Got (BN) : শিক্ষানবিশ (probationary) কর্মচারীকে পদত্যাগের জন্য ১৫ দিনের লিখিত নোটিশ দিতে হব
-    Q033: CONTRADICTION: answer gives 14 but also {'১৪'} — review manually
-      Expected : Within 14 working days of receiving Form GR-01
-      Got (BN) : হিউম্যান রিসোর্সেস (HR) বিভাগকে অভিযোগ পাওয়ার পর **১৪ কর্মদিবসের** মধ্যে তদন্ত 
-    Q035: CONTRADICTION: answer gives 8 but also {'১', '1', '2', '6', '৮'} — review manually
-      Expected : Twice the ordinary basic rate for hours beyond 8 hours per day or 48 hours per w
-      Got (BN) : গ্রেড C কর্মীরা প্রতিদিন ৮ ঘণ্টা বা প্রতি সপ্তাহে ৪৮ ঘণ্টার বেশি কাজের জন্য সাধা
-    Q037: CONTRADICTION: answer gives 48 but also {'01', '৪৮'} — review manually
-      Expected : At least 48 hours before the scheduled departure
-      Got (BN) : ভ্রমণ অনুরোধ ফর্ম (Form TR-01) নির্ধারিত যাত্রার অন্তত **৪৮ ঘণ্টা আগে** জমা দিতে
-    Q040: CONTRADICTION: answer gives 3 but also {'6', '2', '৩'} — review manually
-      Expected : 3 working days
-      Got (BN) : পিতামাতার মৃত্যুতে একজন কর্মী ৩ কার্যদিবস শোক ছুটি পান (Section 3.6.2)।
 
 ============================================================

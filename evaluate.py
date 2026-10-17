@@ -125,24 +125,34 @@ def check_contradiction(answer: str, expected_primary: str) -> str | None:
     Return a warning string if the answer gives a conflicting value alongside
     the expected one, otherwise None.
 
-    Logic: collect all numbers in the answer of the same digit-length as the
-    expected value. If more than one distinct value of that length appears,
-    the answer contains contradictory figures for the same fact.
+    Only applied to primary numbers with 3+ digits. Single and two-digit
+    primaries are skipped because they collide with section references (3.2),
+    times (9:00), and dates that legitimately appear in correct answers —
+    producing too many false positives to be useful.
 
-    Example: expected "650" → answer has "৬৫২" (652) AND "650" → contradiction.
+    Example where this fires correctly:
+      expected "650" → answer has "৬৫২" (652) AND "650" → CONTRADICTION
+
+    Important: Bengali digits are normalised to ASCII before scanning because
+    Python's \\d matches Bengali numerals in Unicode mode. Without normalisation,
+    "৫০০" and "500" would appear as two distinct values, producing false positives
+    on correct Bangla answers that write the same number in Bengali script.
     """
     if not expected_primary:
         return None
 
-    target_len = len(expected_primary)
-    # Find all digit sequences of the same length in the answer (ASCII only)
-    answer_clean = re.sub(r"(\d),(\d)", r"\1\2", answer)
-    found = set(re.findall(r"\b\d{" + str(target_len) + r"}\b", answer_clean))
+    # Skip for 1–2 digit numbers: too many innocent collisions with section
+    # references (3.2), times (9:00), and dates in correct answers
+    if len(expected_primary) < 3:
+        return None
 
-    # Also convert Bengali numerals to ASCII before collecting
+    # Normalise Bengali digits → ASCII FIRST, then strip commas
     bn_to_ascii = str.maketrans("০১২৩৪৫৬৭৮৯", "0123456789")
-    answer_ascii = answer.translate(bn_to_ascii)
-    found |= set(re.findall(r"\b\d{" + str(target_len) + r"}\b", answer_ascii))
+    answer_norm = answer.translate(bn_to_ascii)
+    answer_norm = re.sub(r"(\d),(\d)", r"\1\2", answer_norm)
+
+    target_len = len(expected_primary)
+    found = set(re.findall(r"\b\d{" + str(target_len) + r"}\b", answer_norm))
 
     if len(found) > 1 and expected_primary in found:
         conflicting = found - {expected_primary}
