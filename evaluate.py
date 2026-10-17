@@ -79,7 +79,7 @@ def check_refusal(text: str) -> bool:
         idx = text_lower.find(phrase)
         if idx != -1:
             after = text[idx + len(phrase):]
-            if re.search(r"\d", after):
+            if re.search(r"[0-9]", after):
                 return False
     return True
 
