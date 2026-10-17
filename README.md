@@ -15,14 +15,14 @@ A bilingual (English / Bangla) conversational AI assistant that answers employee
 
 ---
 
-## Accuracy Results
+## Automated Test-Set Pass Rates
 
-Evaluated against a 50-question blind test set (40 answerable + 10 must-refuse traps).
+Evaluated against a 50-question blind test set (40 answerable + 10 must-refuse traps). These are automated scorer pass rates, not manually verified accuracy — see [Known limitations](#known-limitations-of-the-current-scorer) for what the scorer does and does not check.
 
 | Metric | Target | Result |
 |---|---|---|
-| English accuracy | ≥ 90% | **95.0%** |
-| Bangla accuracy | ≥ 90% | **100.0%** |
+| English pass rate | ≥ 90% | **95.0%** |
+| Bangla pass rate | ≥ 90% | **100.0%** |
 | EN vs BN gap | ≤ 5 percentage points | **5 pp** |
 | Refusal rate (out-of-scope) | 10 / 10 | **10 / 10** |
 
@@ -45,7 +45,7 @@ All four targets met. Evaluated on `gemini-3.5-flash-lite` · test-set v1 · Oct
 ## How it works
 
 1. The full HR handbook is loaded as context on every request
-2. A strict system prompt instructs the model to answer only from the handbook, cite sections, refuse out-of-scope questions, and reply in the user's language
+2. Policy rules (answer only from the handbook, cite sections, refuse out-of-scope questions, reply in the user's language) are sent as the first turn in the conversation. Note: the Gemini free-tier REST API (`v1beta`) does not expose a dedicated system-instruction field, so rules are embedded in the user turn rather than a true system prompt.
 3. The model returns a complete response via the Gemini REST API, displayed in the Streamlit chat interface
 
 ---
@@ -112,4 +112,5 @@ Items not implemented in this demo but required before production deployment:
 - **System instruction enforcement** — use the API's dedicated system-instruction field rather than embedding rules in the first user turn
 - **Adversarial refusal tests** — add test cases where a refusal phrase is followed by fabricated content, to catch partial-refusal failures
 - **Exponential backoff** — separate transient API errors (503, network drops) from permanent errors (401, 404) and retry only the former
+- **API key placement** — the Gemini free-tier `v1beta` endpoint requires the key as a URL query parameter; a production deployment should use a backend proxy to keep the key server-side
 - **Runtime citation validation** — run the section-existence check on live chatbot responses, not only during offline evaluation
