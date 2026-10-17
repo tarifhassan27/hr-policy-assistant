@@ -108,7 +108,7 @@ English scoring uses keyword overlap (≥ 60% of expected keywords must appear) 
 Items not implemented in this demo but required before production deployment:
 
 - **Structured expected facts** — replace free-text expected answers with per-question JSON fields (primary value, conditions, exceptions, dates) and score each independently
-- **Contradiction detection** — flag answers that give two conflicting values for the same fact
+- **Contradiction detection** — a basic numeric heuristic is implemented (flags same-digit-length conflicts for 3+ digit numbers); semantic contradiction detection (e.g. conflicting units, cross-length number conflicts) remains future work
 - **System instruction enforcement** — use the API's dedicated system-instruction field rather than embedding rules in the first user turn
 - **Adversarial refusal tests** — add test cases where a refusal phrase is followed by fabricated content, to catch partial-refusal failures
 - **Exponential backoff** — separate transient API errors (503, network drops) from permanent errors (401, 404) and retry only the former
