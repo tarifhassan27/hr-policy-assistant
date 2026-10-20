@@ -8,12 +8,35 @@ A bilingual (English / Bangla) conversational AI assistant that answers employee
 
 ## Slides
 
-| | | | |
-|---|---|---|---|
-| ![Slide 1](docs/slides/slide_01.png) | ![Slide 2](docs/slides/slide_02.png) | ![Slide 3](docs/slides/slide_03.png) | ![Slide 4](docs/slides/slide_04.png) |
-| ![Slide 5](docs/slides/slide_05.png) | ![Slide 6](docs/slides/slide_06.png) | ![Slide 7](docs/slides/slide_07.png) | |
+Full deck: [`docs/slides/deck.pdf`](docs/slides/deck.pdf)
 
-[Download deck (PDF)](docs/slides/deck.pdf)
+### Slide 1 — Title
+
+![Slide 1](docs/slides/slide_01.png)
+
+### Slide 2 — The Problem
+
+![Slide 2](docs/slides/slide_02.png)
+
+### Slide 3 — How It Works
+
+![Slide 3](docs/slides/slide_03.png)
+
+### Slide 4 — Demo: English
+
+![Slide 4](docs/slides/slide_04.png)
+
+### Slide 5 — Demo: Bangla
+
+![Slide 5](docs/slides/slide_05.png)
+
+### Slide 6 — Demo: Refusal
+
+![Slide 6](docs/slides/slide_06.png)
+
+### Slide 7 — Evaluation Results
+
+![Slide 7](docs/slides/slide_07.png)
 
 ---
 
