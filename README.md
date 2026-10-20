@@ -6,12 +6,31 @@ A bilingual (English / Bangla) conversational AI assistant that answers employee
 
 ---
 
+## Slides
+
+| | | | |
+|---|---|---|---|
+| ![Slide 1](docs/slides/slide_01.png) | ![Slide 2](docs/slides/slide_02.png) | ![Slide 3](docs/slides/slide_03.png) | ![Slide 4](docs/slides/slide_04.png) |
+| ![Slide 5](docs/slides/slide_05.png) | ![Slide 6](docs/slides/slide_06.png) | ![Slide 7](docs/slides/slide_07.png) | |
+
+[Download deck (PDF)](docs/slides/deck.pdf)
+
+---
+
 ## What it does
 
 - Answers HR policy questions in **English or Bangla** based on language of the question
 - Cites the exact **section number** for every answer
 - **Refuses to answer** questions not covered by the handbook (e.g. salary of a manager, competitor policies)
 - Runs entirely on the **Gemini free tier** — zero cost
+
+---
+
+## Screenshots
+
+| English answer | Bangla answer | Refusal |
+|---|---|---|
+| ![English demo](docs/slides/ss_english.png) | ![Bangla demo](docs/slides/ss_bangla.png) | ![Refusal demo](docs/slides/ss_refusal.png) |
 
 ---
 
@@ -26,7 +45,7 @@ Evaluated against a 50-question blind test set (40 answerable + 10 must-refuse t
 | EN vs BN gap | ≤ 5 percentage points | **5 pp** |
 | Refusal rate (out-of-scope) | 10 / 10 | **10 / 10** |
 
-All four targets met. Evaluated on `gemini-3.5-flash-lite` · test-set v1 · Oct 2026.
+All four targets met. Evaluated on `gemini-2.0-flash-lite` · test-set v1 · Oct 2026.
 
 ---
 
@@ -34,7 +53,7 @@ All four targets met. Evaluated on `gemini-3.5-flash-lite` · test-set v1 · Oct
 
 | Component | Choice |
 |---|---|
-| LLM | Gemini (`gemini-3.5-flash-lite`) via REST API |
+| LLM | Gemini (`gemini-2.0-flash-lite`) via REST API |
 | UI | Streamlit |
 | Language | Python 3.11 |
 | Deployment | Streamlit Cloud |
@@ -86,6 +105,18 @@ hr-policy-assistant/
 ├── results/
 │   ├── raw_answers.csv        # Model outputs for all 50 questions
 │   └── evaluation_report.txt  # Scored accuracy results
+├── docs/
+│   ├── slides/
+│   │   ├── deck.pdf           # Presentation deck (7 slides)
+│   │   ├── slide_01.png       # Title
+│   │   ├── slide_02.png       # Problem
+│   │   ├── slide_03.png       # Architecture
+│   │   ├── slide_04.png       # English demo
+│   │   ├── slide_05.png       # Bangla demo
+│   │   ├── slide_06.png       # Refusal demo
+│   │   └── slide_07.png       # Evaluation results
+│   ├── pilot-note.md          # How to run a pilot, what to measure
+│   └── how-to-use.md          # Bangla user guide
 ├── definitions.md       # Locked accuracy targets (set before any code)
 └── requirements.txt
 ```
